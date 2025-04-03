@@ -1,0 +1,25 @@
+{
+    "name": "Agricultura de Gravatá",
+    "short_name": "Agricultura Gravatá",
+    "icons": [
+        {
+            "src": "assets/img/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/img/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#4CAF50",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "start_url": "./",
+    "description": "Site oficial da Secretaria de Agricultura de Gravatá, Pernambuco",
+    "orientation": "portrait",
+    "scope": "./",
+    "lang": "pt-BR"
+} 
+
