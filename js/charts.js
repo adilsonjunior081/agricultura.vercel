@@ -441,17 +441,18 @@ function loadStaticData() {
     
     // Dados para gráfico de distribuição
     const distData = {
-        labels: ['Abacaxi', 'Banana', 'Cará', 'Chuchu', 'Goiaba', 'Orgânicos'],
+        labels: ['Abacaxi', 'Banana', 'Cará', 'Chuchu', 'Goiaba', 'Orgânicos', 'Flores'],
         datasets: [{
             label: 'Área em Hectares',
-            data: [750, 450, 275, 200, 225, 175],
+            data: [1000, 302, 473, 150, 250, 26, 320],
             backgroundColor: [
                 '#FC9F1C',
                 '#2CB1A3',
                 '#60442F',
                 '#8a6344',
                 '#EB3C3B',
-                '#5ec8bd'
+                '#5ec8bd',
+                '#FF6384'
             ],
             borderWidth: 1
         }]
@@ -459,27 +460,27 @@ function loadStaticData() {
     
     // Dados para gráfico de impacto econômico
     const economicData = {
-        labels: ['Flores', 'Abacaxi', 'Banana', 'Chuchu', 'Cará São Tomé', 'Goiaba', 'Orgânicos'],
+        labels: ['Abacaxi', 'Banana da terra', 'Chuchu', 'Cará São Tomé', 'Goiaba', 'Orgânicos', 'Flores'],
         datasets: [{
-            label: 'Impacto Econômico (Milhões R$)',
-            data: [50, 30, 30, 30, 30, 30, 30],
+            label: 'Impacto Econômico (R$ Milhões)',
+            data: [122.5, 31.71, 15.75, 45.408, 9, 1.5, 56.385],
             backgroundColor: [
-                '#FF6384', // Flores
                 '#FC9F1C', // Abacaxi
-                '#2CB1A3', // Banana
+                '#2CB1A3', // Banana da terra
                 '#8a6344', // Chuchu
-                '#60442F', // Cará
+                '#60442F', // Cará São Tomé
                 '#EB3C3B', // Goiaba
-                '#5ec8bd'  // Orgânicos
+                '#5ec8bd', // Orgânicos
+                '#FF6384'  // Flores
             ],
             borderColor: [
-                '#FF6384',
                 '#FC9F1C',
                 '#2CB1A3',
                 '#8a6344',
                 '#60442F',
                 '#EB3C3B',
-                '#5ec8bd'
+                '#5ec8bd',
+                '#FF6384'
             ],
             borderWidth: 1
         }]
@@ -649,6 +650,12 @@ function initDistributionChart() {
     if (chartContainer) {
         addChartButtons(chartContainer, distributionChart, 'distribuicao_area_gravata');
     }
+    // Atualizar valor total exibido
+    const total = 1000 + 302 + 473 + 150 + 250 + 26 + 320;
+    const totalValueEl = document.querySelector('.hectares-info-value strong');
+    if (totalValueEl) {
+        totalValueEl.textContent = total.toLocaleString('pt-BR');
+    }
 }
 
 // Gráfico de Impacto Econômico
@@ -672,10 +679,10 @@ function initEconomicImpactChart() {
                     },
                     ticks: {
                         callback: function(value) {
-                            return 'R$ ' + value + ' M';
+                            return 'R$ ' + value.toLocaleString('pt-BR', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + ' M';
                         }
                     },
-                    max: 60
+                    max: 130
                 }
             },
             plugins: {
@@ -685,7 +692,7 @@ function initEconomicImpactChart() {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return 'R$ ' + context.raw + ' milhões';
+                            return 'R$ ' + context.raw.toLocaleString('pt-BR', {minimumFractionDigits: 3, maximumFractionDigits: 3}) + ' milhões';
                         }
                     }
                 },
@@ -694,7 +701,7 @@ function initEconomicImpactChart() {
                     align: 'end',
                     offset: 4,
                     formatter: (value) => {
-                        return 'R$ ' + value + ' M';
+                        return 'R$ ' + value.toLocaleString('pt-BR', {minimumFractionDigits: 3, maximumFractionDigits: 3}) + ' M';
                     },
                     color: '#000',
                     font: {
@@ -715,6 +722,13 @@ function initEconomicImpactChart() {
     const chartContainer = document.getElementById('economicImpactChart-container');
     if (chartContainer) {
         addChartButtons(chartContainer, economicImpactChart, 'impacto_economico_gravata');
+    }
+    
+    // Atualizar valor total gerado na página
+    const total = 122.5 + 31.71 + 15.75 + 45.408 + 9 + 1.5 + 56.385;
+    const totalValueEl = document.querySelector('.economics-info-value strong');
+    if (totalValueEl) {
+        totalValueEl.textContent = 'R$ ' + Math.round(total).toLocaleString('pt-BR');
     }
 }
 

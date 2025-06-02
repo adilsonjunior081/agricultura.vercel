@@ -27,6 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header style="background-color: white; box-shadow: none; border-bottom: none;">
@@ -46,6 +47,7 @@
                     <li><a href="../index.html">Início</a></li>
                     <li><a href="#introducao">Introdução</a></li>
                     <li><a href="#producao">Produção</a></li>
+                    <li><a href="#grafico">Gráfico</a></li>
                     <li><a href="#fitossanitario">Fitossanitário</a></li>
                     <li><a href="#impacto">Impacto</a></li>
                     <li><a href="#contato">Contato</a></li>
@@ -191,6 +193,22 @@
     
     <div class="section-divider"></div>
 
+    <section id="grafico" class="about">
+        <div class="container">
+            <h2 class="section-title">Distribuição da Produção de Flores</h2>
+            <div class="about-content animate-on-scroll slide-in">
+                <div class="about-text">
+                    <p>O gráfico abaixo apresenta a distribuição percentual da produção semanal de flores em Gravatá, destacando a predominância do Crisântemo e a diversidade da produção local.</p>
+                    <div style="width: 100%; max-width: 800px; margin: 30px auto; height: 500px;">
+                        <canvas id="floresChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
     <section id="fitossanitario" class="about">
         <div class="container">
             <h2 class="section-title">Controle Fitossanitário – Principais Doenças e Pragas</h2>
@@ -305,6 +323,7 @@
                         <li><a href="../index.html">Início</a></li>
                         <li><a href="#introducao">Introdução</a></li>
                         <li><a href="#producao">Produção</a></li>
+                        <li><a href="#grafico">Gráfico</a></li>
                         <li><a href="#fitossanitario">Fitossanitário</a></li>
                         <li><a href="#impacto">Impacto</a></li>
                         <li><a href="#contato">Contato</a></li>
@@ -321,6 +340,115 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="../js/main.js"></script>
+    <script>
+        // Dados para o gráfico
+        const ctx = document.getElementById('floresChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Crisântemo',
+                    'Aster',
+                    'Rosas',
+                    'Jasmim',
+                    'Tango',
+                    'Avenca',
+                    'Lírio',
+                    'Lisianthus',
+                    'Gérbera',
+                    'Gipsófila',
+                    'Limonium',
+                    'Aspargo',
+                    'Girassol',
+                    'Angélica'
+                ],
+                datasets: [{
+                    data: [42290, 8360, 15746, 1800, 5220, 900, 1600, 1900, 2600, 1300, 800, 700, 1100, 900],
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#8BC34A',
+                        '#CDDC39',
+                        '#FFEB3B',
+                        '#FFC107',
+                        '#FF9800',
+                        '#FF5722',
+                        '#795548',
+                        '#9C27B0',
+                        '#673AB7',
+                        '#3F51B5',
+                        '#2196F3',
+                        '#03A9F4',
+                        '#00BCD4'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                family: 'Montserrat',
+                                size: 11
+                            },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                return data.labels.map((label, i) => {
+                                    const value = data.datasets[0].data[i];
+                                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return {
+                                        text: `${label}: ${value.toLocaleString()} (${percentage}%)`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor,
+                                        lineWidth: 1,
+                                        hidden: isNaN(data.datasets[0].data[i]),
+                                        index: i
+                                    };
+                                });
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Produção Semanal de Flores (em pacotes)',
+                        font: {
+                            family: 'Montserrat',
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value.toLocaleString()} pacotes (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html> 
 

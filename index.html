@@ -289,7 +289,7 @@
                         <i class="fas fa-spa"></i>
                     </div>
                     <h3>Flores</h3>
-                    <p>A floricultura em Gravatá é um segmento em expansão, com destaque para a produção de diversas espécies ornamentais adaptadas ao clima local.</p>
+                    <p>Gravatá é o maior produtor de flores do Norte e Nordeste, com produção semanal de mais de 80 mil pacotes de 14 espécies diferentes, liderada pelo Crisântemo.</p>
                     <a href="pages/flores.html" class="btn btn-prefeitura">Saiba Mais</a>
                 </div>
             </div>
@@ -343,6 +343,22 @@
                         <div class="economics-info-value">
                             <strong>R$ 230</strong>
                             <span>milhões</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box animate-on-scroll slide-in">
+                    <h3>Produção de Flores em Gravatá</h3>
+                    <div class="chart-container">
+                        <div id="floresChart-container">
+                            <canvas id="floresChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="flores-info">
+                        <div class="flores-info-title">Produção Semanal Total</div>
+                        <div class="flores-info-value">
+                            <strong>80.000+</strong>
+                            <span>pacotes</span>
                         </div>
                     </div>
                 </div>
@@ -704,6 +720,106 @@
     </script>
     <script src="js/charts.js"></script>
     <script src="js/main.js"></script>
+    
+    <script>
+        // Gráfico de Flores
+        const floresCtx = document.getElementById('floresChart').getContext('2d');
+        new Chart(floresCtx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Crisântemo',
+                    'Aster',
+                    'Rosas',
+                    'Jasmim',
+                    'Tango',
+                    'Avenca',
+                    'Lírio',
+                    'Lisianthus',
+                    'Gérbera',
+                    'Gipsófila',
+                    'Limonium',
+                    'Aspargo',
+                    'Girassol',
+                    'Angélica'
+                ],
+                datasets: [{
+                    data: [42290, 8360, 15746, 1800, 5220, 900, 1600, 1900, 2600, 1300, 800, 700, 1100, 900],
+                    backgroundColor: [
+                        '#4CAF50',
+                        '#8BC34A',
+                        '#CDDC39',
+                        '#FFEB3B',
+                        '#FFC107',
+                        '#FF9800',
+                        '#FF5722',
+                        '#795548',
+                        '#9C27B0',
+                        '#673AB7',
+                        '#3F51B5',
+                        '#2196F3',
+                        '#03A9F4',
+                        '#00BCD4'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                family: 'Montserrat',
+                                size: 11
+                            },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                return data.labels.map((label, i) => {
+                                    const value = data.datasets[0].data[i];
+                                    const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return {
+                                        text: `${label}: ${value.toLocaleString()} (${percentage}%)`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].borderColor,
+                                        lineWidth: 1,
+                                        hidden: isNaN(data.datasets[0].data[i]),
+                                        index: i
+                                    };
+                                });
+                            }
+                        }
+                    },
+                    title: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value.toLocaleString()} pacotes (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
+    </script>
     
     <!-- Schema.org para SEO -->
     <script type="application/ld+json">
